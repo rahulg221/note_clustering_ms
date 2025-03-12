@@ -6,20 +6,20 @@ from sentence_transformers import SentenceTransformer
 from sklearn.cluster import KMeans
 import numpy as np
 import pandas as pd
+from transformers import pipeline
 
 app = FastAPI()
 
 # Load the sentence transformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
+# Predefine categories - this can be customized by the user
+categories = ["Finance", "Health", "Education", "Technology", "Sports"]
+
 # Request body that takes in a list of strings
 class RequestBody(BaseModel):
     notes: list[str]
     
-@app.get("/")
-def main():
-    return {"message": "Hello"}
-
 @app.get("/label")
 async def cluster_notes(request_body: RequestBody):
     notes = request_body.notes
